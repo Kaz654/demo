@@ -66,9 +66,7 @@ try
                 }
                 else
                 {
-                    MessageBox.Show("Вы заблокированы. Обратитесь к администратору системы.", "Уведомление",
-                   
-                    MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Вы заблокированы. Обратитесь к администратору системы.", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             else
