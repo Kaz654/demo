@@ -1,0 +1,46 @@
+using Newtonsoft.Json.Linq;
+using System.Net.Http;
+
+namespace Hotel
+{
+    /// <summary>
+    /// Логика взаимодействия для Test.xaml
+    /// </summary>
+    public partial class Test : Window
+    {
+        private char[] forbiddensymbol = new char[] { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')' };
+
+        public Test()
+        {
+            InitializeComponent();
+        }
+
+        private void check_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (char symbol in forbiddensymbol)
+            {
+                if (FullNameTB.Text.Contains(symbol))
+                {
+                    ResultTB.Text = "Есть запрещенные символы!";
+                    break;
+                }
+                else
+                {
+                    ResultTB.Text = "Всё хорошо";
+
+                }
+            }
+        }
+2 тб и 2 бт
+
+
+        private async void Get_Click(object sender, RoutedEventArgs e)
+        {
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync("http://localhost:5048/WeatherForecast");
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            JObject jobject = JObject.Parse(stringResponse);
+            FullNameTB.Text = jobject["FullName"].ToString();
+        }
+    }
+}
