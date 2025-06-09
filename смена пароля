@@ -1,0 +1,52 @@
+<Label x:Name="Label1" Content="Вы успешно авторизировались. Пожалуйста, измените пароль" HorizontalAlignment="Center" Height="40" Margin="100,16,0,0" VerticalAlignment="Top"></Label>
+<Label x:Name="Label2" Content="Старый пароль" HorizontalAlignment="Left" Height="40" Margin="148,46,0,0" VerticalAlignment="Top"></Label>
+<Label x:Name="Label3" Content="Новый пароль" HorizontalAlignment="Left" Height="43" Margin="148,150,0,0" VerticalAlignment="Top"></Label>
+<Label x:Name="Label4" Content="Подтвердите пароль" HorizontalAlignment="Left" Height="40" Margin="148,250,0,0" VerticalAlignment="Top"></Label>
+<TextBox x:Name="TextBox3" HorizontalAlignment="Left" Height="33" Width="250" Margin="148,86,0,0" TextWrapping="Wrap" VerticalAlignment="Top"></TextBox>
+<TextBox x:Name="TextBox4" HorizontalAlignment="Left" Height="33" Width="250" Margin="148,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top"></TextBox>
+<TextBox x:Name="TextBox5" HorizontalAlignment="Left" Height="33" Width="250" Margin="148,290,0,0" TextWrapping="Wrap" VerticalAlignment="Top"></TextBox>
+<Button x:Name="button2" Content="Изменить пароль" HorizontalAlignment="Left" Height="45" Width="200" Margin="300,350,0,0" VerticalAlignment="Top" Click="button2_Click" >
+</Button>
+
+var user = (from x in db.Users
+            where x.ID == usID
+            select x).ToArray();
+// если старый и новый пароли совпадают
+if (user[0].password == TextBox3.Text)
+{
+    // если новый и подтверждение пароля совпадают
+    if (TextBox4.Text == TextBox5.Text)
+    {
+        // меняем старый пароль на новый в базе данных
+        user[0].password = TextBox4.Text;
+        db.SaveChanges();
+        MessageBox.Show("Пароль успешно изменён",
+         "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+        // сохраняем новую дату входа
+        user[0].date = DateTime.Now;
+        // обнуляем счётчик неправильных попыток входа
+        user[0].count = 0;
+        db.SaveChanges();
+        // переходим на окно пользователя
+        Window2 window1 = new Window2();
+        window1.Show();
+    }
+    else
+    {
+        MessageBox.Show("Введённые пароли не совпадают!", "Пожалуйста проверьте ещё раз введённые данные",
+        MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+}
+else
+{
+    MessageBox.Show("Старый пароль не совпадает!", "Пожалуйста проверьте ещё раз введённые данные",
+    MessageBoxButton.OK, MessageBoxImage.Error);
+}
+
+// подключаемся к базе данных
+hotelEntities db = new hotelEntities();
+private int usID; // номер пользователя, который меняет пароль
+public Window2((int usID) // передаём параметр
+{
+    InitializeComponent();
+    this.usID = usID;
