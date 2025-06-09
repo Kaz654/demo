@@ -1,0 +1,40 @@
+пользователь User = новый пользователь(); 
+var user2 = (из u в bd.user, где u.login == TextBox1.Text, выберите u).ToArray(); 
+// проверяем наличие пользователя 
+если (длина имени пользователя2 равна 0) 
+{
+ // записываем данные из полей в таблицу БД 
+ Пользователи1. логин = Текст в поле ввода1. 
+ Пароль пользователя 1 = содержимое текстового поля 2; 
+ Пользователи1.роль2 = (тип роли.Выбранный элемент как роль).Идентификатор; 
+ Пользователи1. Фамилия = Текст в поле TextBox3. 
+ Имя пользователя1 = Текст в поле ввода4; 
+ Пользователи1. Отчество = Текст в поле ввода 5. 
+ Количество пользователей1 = 0; 
+ Users1.активный = true; 
+ Пользователь1.дата = null; 
+ db.Пользователи.Добавить(Пользователи1); 
+ db.SaveChanges(); 
+ // обновление таблицы для вывода из базы 
+ var user1 = (из db.Users выберите u).ToArray(); 
+ GridUser.ItemsSource = пользователь1; 
+ MessageBox.Show("Данные успешно добавлены", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information); 
+
+}
+ещё 
+{
+ Почтовый ящик.Show("Такой пользователь уже существует", 
+ "!", MessageBoxButton.ОК, изображение messageboxbutton.Ошибка); 
+}
+
+db.SaveChanges(); 
+
+InitializeComponent(); 
+var rol1 = (из x в db.Role выберите x).ToArray(); 
+typeRole.DisplayMemberPath = «роль1»; 
+typeRole.SelectedValuePath = «ID»; 
+typeRole.ItemsSource = rol1; 
+db.Users.Load(); 
+typeRole.ItemsSource = db.Users.Local.ToBindingList(); 
+var user1 = (из db.Users выберите u).ToArray(); 
+GridUser.ItemsSource = пользователь1; 
