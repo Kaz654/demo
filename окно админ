@@ -1,40 +1,71 @@
-пользователь User = новый пользователь(); 
-var user2 = (из u в bd.user, где u.login == TextBox1.Text, выберите u).ToArray(); 
-// проверяем наличие пользователя 
-если (длина имени пользователя2 равна 0) 
+user User = new user();
+var user2 = (from u in bd.user where u.login == TextBox1.Text select u).ToArray();
+// проверяем наличие пользователя
+if (user2.Length == 0)
 {
- // записываем данные из полей в таблицу БД 
- Пользователи1. логин = Текст в поле ввода1. 
- Пароль пользователя 1 = содержимое текстового поля 2; 
- Пользователи1.роль2 = (тип роли.Выбранный элемент как роль).Идентификатор; 
- Пользователи1. Фамилия = Текст в поле TextBox3. 
- Имя пользователя1 = Текст в поле ввода4; 
- Пользователи1. Отчество = Текст в поле ввода 5. 
- Количество пользователей1 = 0; 
- Users1.активный = true; 
- Пользователь1.дата = null; 
- db.Пользователи.Добавить(Пользователи1); 
- db.SaveChanges(); 
- // обновление таблицы для вывода из базы 
- var user1 = (из db.Users выберите u).ToArray(); 
- GridUser.ItemsSource = пользователь1; 
- MessageBox.Show("Данные успешно добавлены", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information); 
+    // записываем данные из полей в таблицу бд
+    Users1.login = TextBox1.Text;
+    Users1.password = TextBox2.Text;
+    Users1.role2 = (typeRole.SelectedItem as Role).ID;
+    Users1.surname = TextBox3.Text;
+    Users1.name = TextBox4.Text;
+    Users1.othcestvo = TextBox5.Text;
+    Users1.count = 0;
+    Users1.active = true;
+    Users1.date = null;
+    db.Users.Add(Users1);
+    db.SaveChanges();
+    // обновление таблицы для вывода из базы
+    var user1 = (from u in db.Users select u).ToArray();
+    GridUser.ItemsSource = user1;
+    MessageBox.Show("Данные успешно добавлены", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
 
 }
-ещё 
+else
 {
- Почтовый ящик.Show("Такой пользователь уже существует", 
- "!", MessageBoxButton.ОК, изображение messageboxbutton.Ошибка); 
+    MessageBox.Show("Такой пользователь уже существует",
+    "!", MessageBoxButton.OK, MessageBoxImage.Error);
 }
-
 db.SaveChanges(); 
 
-InitializeComponent(); 
-var rol1 = (из x в db.Role выберите x).ToArray(); 
-typeRole.DisplayMemberPath = «роль1»; 
-typeRole.SelectedValuePath = «ID»; 
-typeRole.ItemsSource = rol1; 
-db.Users.Load(); 
-typeRole.ItemsSource = db.Users.Local.ToBindingList(); 
-var user1 = (из db.Users выберите u).ToArray(); 
-GridUser.ItemsSource = пользователь1; 
+InitializeComponent();
+var rol1 = (from x in db.Role select x).ToArray();
+typeRole.DisplayMemberPath = "role1";
+typeRole.SelectedValuePath = "ID";
+typeRole.ItemsSource = rol1;
+db.Users.Load();
+typeRole.ItemsSource = db.Users.Local.ToBindingList();
+var user1 = (from u in db.Users select u).ToArray();
+GridUser.ItemsSource = user1;
+
+<Label x:Name="Label1" Content="Добавление пользователей. Изменение данных пользователей." HorizontalAlignment="Left" Height="30" Margin="48,6,0,0" VerticalAlignment="Top"></Label>
+<Label x:Name="Label2" Content="Имя нового пользователя" HorizontalAlignment="Left" Height="40" Margin="48,46,0,0" VerticalAlignment="Top"></Label>
+<Label x:Name="Label3" Content="Введите пароль" HorizontalAlignment="Left" Height="30" Margin="48,90,0,0" VerticalAlignment="Top"></Label>
+<Label x:Name="Label4" Content="Выберите роль пользователя" HorizontalAlignment="Left" Height="30" Margin="48,135,0,0" VerticalAlignment="Top"></Label>
+<Label x:Name="Label5" Content="Фамилия" HorizontalAlignment="Left" Height="30" Margin="48,180,0,0" VerticalAlignment="Top"></Label>
+<Label x:Name="Label6" Content="Имя" HorizontalAlignment="Left" Height="30" Margin="300,180,0,0" VerticalAlignment="Top"></Label>
+<Label x:Name="Label7" Content="Отчество" HorizontalAlignment="Left" Height="30" Margin="500,180,0,0" VerticalAlignment="Top"></Label>
+<TextBox x:Name="TextBox1"  HorizontalAlignment="Left" Height="33" Width="250" Margin="248,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top"></TextBox>
+<TextBox x:Name="TextBox2" HorizontalAlignment="Left" Height="33" Width="250" Margin="248,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top"></TextBox>
+<TextBox x:Name="TextBox3" HorizontalAlignment="Left" Height="33" Width="150" Margin="120,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top"></TextBox>
+<TextBox x:Name="TextBox4" HorizontalAlignment="Left" Height="33" Width="150" Margin="340,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top"></TextBox>
+<TextBox x:Name="TextBox5" HorizontalAlignment="Left" Height="33" Width="150" Margin="570,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top"></TextBox>
+<ComboBox x:Name="typeRole" FontSize="14" HorizontalAlignment="Left" Height="33" Width="250" VerticalAlignment="Top" Margin="248,135,0,0" ></ComboBox>
+<Button x:Name="button3" Content="Добавить" HorizontalAlignment="Left" Height="30" Width="90" Margin="550,90,0,0" VerticalAlignment="Top" Click="button3_Click" ></Button>
+<Button x:Name="button4" Content="Сохранить изменения" HorizontalAlignment="Left" Height="30" Width="130" Margin="550,140,0,0" VerticalAlignment="Top" Click="button4_Click" ></Button>
+<StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+    <DataGrid x:Name="GridUser" AutoGenerateColumns="False" Height="190" MaxWidth="750" ScrollViewer.CanContentScroll="True" Margin="5,230,5,5">
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="ID" Width="*" Binding="{Binding IDUser}"/>
+            <DataGridTextColumn Header="Фамилия" Width="*" Binding="{Binding MiddleName}"/>
+            <DataGridTextColumn Header="Имя" Width="*" Binding="{Binding Name}"/>
+            <DataGridTextColumn Header="Отчество" Width="*" Binding="{Binding LastName}"/>
+            <DataGridTextColumn Header="Роль" Width="*" Binding="{Binding IDPole}"/>
+            <DataGridTextColumn Header="Логин" Width="*" Binding="{Binding Login}"/>
+            <DataGridTextColumn Header="Пароль" Width="*" Binding="{Binding Password}"/>
+            <DataGridTextColumn Header="Кол-во вводов" Width="*" Binding="{Binding Count}"/>
+            <DataGridTextColumn Header="Активность" Width="*" Binding="{Binding Active}"/>
+            <DataGridTextColumn Header="Дата входа" Width="*" Binding="{Binding Date}"/>
+        </DataGrid.Columns>
+    </DataGrid>
+</StackPanel>
