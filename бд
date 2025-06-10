@@ -1,0 +1,76 @@
+insert into [Название таблицы] ((столбцы для переноса))
+select into (сколько данных перенести) (данные столбцов для переноса из эексельки в том порядке что и выше написано) from (из какого листа, не забыть$);
+
+DATEDIFF()
+Самый простой метод вычисления разницы в днях между двумя датами в SQL заключается в использовании
+DATEDIFF() функция. Эта функция возвращает разницу в днях между датой начала и датой окончания.
+GO
+CREATE FUNCTION Dni
+(
+@date_of_entry AS DATE,
+ @departure_date AS DATE
+)
+RETURNS INT
+AS
+BEGIN
+DECLARE @Dn AS INT
+SET @Dn = DATEDIFF (day, @date_of_entry, @departure_date)
+RETURN @Dn
+END
+GO
+SELECT
+ number1,
+ date_of_entry,
+ departure_date,
+ dbo.Dni(date_of_entry, departure_date) AS Days
+FROM
+ Guests
+ORDER BY
+ Days DESC
+
+Запрос на создание новой таблицы для подсчёта дней
+GO
+CREATE FUNCTION Dni5
+(
+@date_of_entry AS DATE,
+ @departure_date AS DATE
+)
+RETURNS INT
+AS
+BEGIN
+DECLARE @Dn AS INT
+SET @Dn = DATEDIFF (day, @date_of_entry, @departure_date)
+RETURN @Dn
+END
+GO
+SELECT
+ Guests.number1,
+ Guests.date_of_entry,
+ Guests.departure_date,
+ dbo.Dni5(date_of_entry, departure_date) AS Days
+INTO DAYSE
+FROM Guests
+
+
+РАСЧЁТ ЗА 30 ДНЕЙ
+GO
+CREATE FUNCTION Col14()
+RETURNS FLOAT
+AS
+BEGIN
+DECLARE @ColvoNait AS REAL
+SELECT
+ @ColvoNait = SUM(Days)
+FROM DAYSE
+ DECLARE @ColvoNumber AS REAL
+ SELECT
+ @ColvoNumber = COUNT(number)
+FROM Room_stock
+DECLARE @Zagruzca AS REAL
+SELECT
+ @Zagruzca = @ColvoNait/(@ColvoNumber*30)*100
+RETURN @Zagruzca
+ END
+GO
+SELECT
+ dbo.Col14() AS [d1]
