@@ -1,21 +1,9 @@
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 
-namespace Hotel
-{
-    /// <summary>
-    /// Логика взаимодействия для Test.xaml
-    /// </summary>
-    public partial class Test : Window
-    {
-        private char[] forbiddensymbol = new char[] { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')' };
-
-        public Test()
-        {
-            InitializeComponent();
-        }
-
-        private void check_Click(object sender, RoutedEventArgs e)
+private char[] forbiddensymbol = new char[] { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')' };
+        
+private void check_Click(object sender, RoutedEventArgs e)
         {
             foreach (char symbol in forbiddensymbol)
             {
@@ -27,13 +15,9 @@ namespace Hotel
                 else
                 {
                     ResultTB.Text = "Всё хорошо";
-
                 }
             }
         }
-2 тб и 2 бт
-
-
         private async void Get_Click(object sender, RoutedEventArgs e)
         {
             HttpClient client = new HttpClient();
@@ -42,5 +26,3 @@ namespace Hotel
             JObject jobject = JObject.Parse(stringResponse);
             FullNameTB.Text = jobject["FullName"].ToString();
         }
-    }
-}
