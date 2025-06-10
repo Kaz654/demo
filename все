@@ -237,4 +237,33 @@ public Window2((int usID) // передаём параметр
     InitializeComponent();
     this.usID = usID;
 
+using Newtonsoft.Json.Linq;
+using System.Net.Http;
+
+private char[] forbiddensymbol = new char[] { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')' };
+        
+private void check_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (char symbol in forbiddensymbol)
+            {
+                if (FullNameTB.Text.Contains(symbol))
+                {
+                    ResultTB.Text = "Есть запрещенные символы!";
+                    break;
+                }
+                else
+                {
+                    ResultTB.Text = "Всё хорошо";
+                }
+            }
+        }
+        private async void Get_Click(object sender, RoutedEventArgs e)
+        {
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync("http://localhost:5048/WeatherForecast");
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            JObject jobject = JObject.Parse(stringResponse);
+            FullNameTB.Text = jobject["FullName"].ToString();
+        }
+
 
